@@ -20,8 +20,12 @@ object access {
       }
     }
 
+  val haveGoodPassword = ValidationRule[SignupReq]("have password containing at least one digit and letter, and be at least 6 characters long") {
+    case SignupReq(_, passwd) =>
+      passwd.length >= 6 && passwd.exists(_.isLetter) && passwd.exists(_.isDigit) }
+
   def signup =
-    post(root :: "signup") :: jsonBody[SignupReq] mapOutput { case SignupReq(login, password) =>
+    post(root :: "signup") :: (jsonBody[SignupReq] should haveGoodPassword) mapOutput { case SignupReq(login, password) =>
       val u = db.user.register(login, sha256(password, secret.passwordSalt))
       Ok(u)
     }
