@@ -11,7 +11,7 @@ import cryptotrader.endpoints._
 
 object Main {
 
-  val api = access.all :+: balance.all :+: order.all
+  val api = access.all :+: balance.all :+: order.all :+: user.all
     
   implicit val encodeExceptionAsJson: Encode.Json[Exception] =
     Encode.json { (e, cs) =>
