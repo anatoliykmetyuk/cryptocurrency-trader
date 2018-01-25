@@ -15,6 +15,12 @@ package object endpoints {
       }
     }
 
+  def admin: Endpoint[UserData] =
+    authenticatedUser mapOutput {
+      case u@UserData(id, username) if username == "admin" => Ok(u)
+      case _ => err("You are not authorized to perform this request")
+    }
+
   def authenticatedUserWithBalance: Endpoint[(UserData, Balance)] =
     authenticatedUser map { u =>
       u -> db.balance.getByUser(u.id)
