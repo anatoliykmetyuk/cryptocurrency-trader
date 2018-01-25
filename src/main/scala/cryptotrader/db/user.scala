@@ -16,6 +16,16 @@ object user extends MemoryDb[UserInternal] {
     internalToExternal(u)
   }
 
+  def update(id: Int, name: String, passwordHash: String): UserData = {
+    val u = UserInternal(id, name, passwordHash)
+    database(id) = u
+    internalToExternal(u)
+  }
+
+  def delete(id: Int): Unit = {
+    database -= id
+  }
+
   def get(id: Int): Option[UserData] =
     database.get(id).map(internalToExternal)
 

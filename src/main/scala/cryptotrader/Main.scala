@@ -10,7 +10,7 @@ import cryptotrader.endpoints._
 
 object Main {
 
-  val api = access.all
+  val api = access.all :+: user.all
 
   def main(args: Array[String]): Unit = {
     val port = 8081
